@@ -3,7 +3,7 @@ extends KinematicBody2D
 const SNAP_LENGTH = 3.0
 const SNAP_DIRECTION = Vector2.DOWN
 const MAX_SPEED = 250
-const MAX_GRAVITY = 450
+const MAX_GRAVITY = 600
 const JUMP_FORCE = -300
 const GRAVITY = 15
 const UP = Vector2(0, -1)
@@ -32,6 +32,8 @@ var can_move = true
 var fuel = 100
 var jump_count = 0
 var terminal_velocity :bool
+var max_health = 100
+var health = max_health
 
 var snap_vector = SNAP_DIRECTION * SNAP_LENGTH
 var velocity = Vector2()
@@ -44,6 +46,8 @@ enum {
 var current_state = MOVE
 
 func _physics_process(delta):
+	if health <= 0:
+		get_tree().reload_current_scene()
 	_value_monitor()
 	ledgeGrabCancel()
 	match current_state:
@@ -149,8 +153,10 @@ func coyoteTime():
 
 func landImpact():
 	if terminal_velocity:
+		terminal_velocity = false
+		print(health)
 		Global.camera._shake(.05, 5)
 		can_move = false
 		yield(get_tree().create_timer(.1), "timeout")
+		health -= 20
 		can_move = true
-		terminal_velocity = false
