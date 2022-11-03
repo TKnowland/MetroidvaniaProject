@@ -31,7 +31,7 @@ var can_jump :bool
 var can_move = true
 var fuel = 100
 var jump_count = 0
-var temp_velocity :float
+var terminal_velocity :bool
 
 var snap_vector = SNAP_DIRECTION * SNAP_LENGTH
 var velocity = Vector2()
@@ -44,6 +44,16 @@ enum {
 var current_state = MOVE
 
 func _physics_process(delta):
+	_value_monitor()
+	ledgeGrabCancel()
+	match current_state:
+		MOVE:
+			move()
+		CLIMB:
+			climb()
+	velocity = move_and_slide_with_snap(velocity, snap_vector, UP)
+
+func _value_monitor():
 	is_climb = (ledge_dw.is_colliding() && !ledge_up.is_colliding() && velocity.y > 20 && !floor_detect.is_colliding())
 	jump_release_buffer = velocity.y < -20 && velocity.y > JUMP_FORCE
 	move_input = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -55,59 +65,46 @@ func _physics_process(delta):
 		jetfuel.visible = true
 	else:
 		jetfuel.visible = false
-	
-	match current_state:
-		MOVE:
-			move()
-		CLIMB:
-			climb()
-	ledgeGrabCancel()
-	velocity = move_and_slide_with_snap(velocity, snap_vector, UP)
 
 
 func move():
 	if move_input && can_move:
 		sprite.scale.x = int(ceil(move_input))
 		velocity.x = lerp(velocity.x, MAX_SPEED * move_input, acc)
-		if is_on_floor():
-			animation.travel("Run")
+		if is_on_floor(): animation.travel("Run")
 	else:
-		if is_on_floor():
-			animation.travel("Idle")
+		if is_on_floor(): animation.travel("Idle")
 		velocity.x = lerp(velocity.x, 0, friction)
-	if floor_detect.is_colliding():
-		can_jump = true
 	if Input.is_action_just_pressed("jump") && can_jump:
 		velocity.y = JUMP_FORCE
-		$Node2D/Jump.play()
 	if is_on_floor():
-		friction = ground_friction
+		if floor_detect.is_colliding():
+			can_jump = true
 		landImpact()
-		if fuel <= 100:
+		friction = ground_friction
+		if fuel < 100:
 			fuel += 5
 		if fuel > 100:
 			fuel = 100
 	else:
 		coyoteTime()
+		jetpack()
+		airControl()
+		terminal_velocity = velocity.y >= MAX_GRAVITY
 		friction = air_friction
-		temp_velocity = velocity.y
-		if Input.is_action_pressed("jetpack") && fuel > 0:
-			is_fly = true
-			fuel -= 4
-			if velocity.y > JUMP_FORCE:
-				velocity.y -= 18
-		else:
-			is_fly = false
 		if is_climb:
 			velocity.y = 0
 			current_state = CLIMB
-		if velocity.y < MAX_GRAVITY && !is_climb && !is_fly:
-			animation.travel("Fall")
-			velocity.y += GRAVITY
-		if velocity.y < 0:
-			animation.travel("Jump")
-		if jump_release_buffer && Input.is_action_just_released("jump"):
-			velocity.y = lerp(velocity.y, 0, 0.5)
+
+func airControl():
+	if velocity.y < MAX_GRAVITY && !is_climb && !is_fly:
+		animation.travel("Fall")
+		velocity.y += GRAVITY
+	if velocity.y < 0 && !is_fly:
+		animation.travel("Jump")
+	if jump_release_buffer && Input.is_action_just_released("jump"):
+		velocity.y = lerp(velocity.y, 0, 0.5)
+
 
 func climb():
 	animation.travel("LedgeGrab")
@@ -121,6 +118,17 @@ func climb():
 		current_state = MOVE
 	elif !ledge_dw.is_colliding():
 		current_state = MOVE
+
+func jetpack():
+	if Input.is_action_pressed("jetpack") && fuel > 0:
+		is_fly = true
+		fuel -= 4
+		if velocity.y > JUMP_FORCE:
+			velocity.y -= 18
+		if velocity.y < 0:
+			animation.travel("Jetpack")
+	else:
+		is_fly = false
 
 func ledgeGrabCancel():
 	if Input.is_action_pressed("ui_down"):
@@ -140,8 +148,9 @@ func coyoteTime():
 	can_jump = false
 
 func landImpact():
-	if temp_velocity >= MAX_GRAVITY:
+	if terminal_velocity:
+		Global.camera._shake(.05, 5)
 		can_move = false
 		yield(get_tree().create_timer(.1), "timeout")
 		can_move = true
-		
+		terminal_velocity = false

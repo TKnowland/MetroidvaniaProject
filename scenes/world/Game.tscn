@@ -22,4 +22,8 @@ audio_listener_enable_2d = true
 
 [node name="Test" parent="ViewportContainer/Viewport" instance=ExtResource( 1 )]
 
+[node name="TextEdit" parent="ViewportContainer/Viewport/Test" index="0"]
+text = "A / D: move
+SPACE: jump"
+
 [editable path="ViewportContainer/Viewport/Test"]
