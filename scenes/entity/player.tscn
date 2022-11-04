@@ -320,9 +320,9 @@ graph_offset = Vector2( 321, 42 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=12]
 
-[sub_resource type="BitmapFont" id=31]
+[sub_resource type="BitmapFont" id=46]
 
-[sub_resource type="StyleBoxFlat" id=32]
+[sub_resource type="StyleBoxFlat" id=47]
 bg_color = Color( 0.164706, 0.0352941, 0.211765, 1 )
 border_width_left = 1
 border_width_top = 1
@@ -336,19 +336,22 @@ expand_margin_top = 1.0
 expand_margin_bottom = 1.0
 anti_aliasing = false
 
-[sub_resource type="StyleBoxFlat" id=33]
+[sub_resource type="StyleBoxFlat" id=48]
 bg_color = Color( 0.360784, 0.121569, 0.458824, 1 )
 corner_detail = 10
 anti_aliasing = false
 
 [sub_resource type="Theme" id=34]
 ProgressBar/colors/font_color = Color( 0.301961, 0.596078, 0.27451, 1 )
-ProgressBar/fonts/font = SubResource( 31 )
-ProgressBar/styles/bg = SubResource( 32 )
-ProgressBar/styles/fg = SubResource( 33 )
+ProgressBar/fonts/font = SubResource( 46 )
+ProgressBar/styles/bg = SubResource( 47 )
+ProgressBar/styles/fg = SubResource( 48 )
 
 [node name="player" type="KinematicBody2D"]
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -383,10 +386,10 @@ wait_time = 0.3
 [node name="up" type="RayCast2D" parent="."]
 position = Vector2( 0, -24 )
 enabled = true
-cast_to = Vector2( 10, 0 )
+cast_to = Vector2( 13, -2 )
 
 [node name="dw" type="RayCast2D" parent="."]
-position = Vector2( 0, -13 )
+position = Vector2( 0, -15 )
 enabled = true
 cast_to = Vector2( 10, 0 )
 
@@ -396,6 +399,7 @@ enabled = true
 cast_to = Vector2( 0, 5 )
 
 [node name="jetpack" type="ProgressBar" parent="."]
+visible = false
 margin_left = -18.0
 margin_top = -29.0
 margin_right = 17.0

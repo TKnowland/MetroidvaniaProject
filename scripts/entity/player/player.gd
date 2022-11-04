@@ -63,7 +63,7 @@ func _value_monitor():
 	move_input = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	if move_input:
 		ledge_dw.cast_to.x = int(ceil(move_input)) * 10
-		ledge_up.cast_to.x = int(ceil(move_input)) * 10
+		ledge_up.cast_to.x = int(ceil(move_input)) * 13
 	jetfuel.value = fuel
 	if fuel < 100:
 		jetfuel.visible = true
@@ -79,11 +79,11 @@ func move():
 	else:
 		if is_on_floor(): animation.travel("Idle")
 		velocity.x = lerp(velocity.x, 0, friction)
+	if floor_detect.is_colliding():
+		can_jump = true
 	if Input.is_action_just_pressed("jump") && can_jump:
 		velocity.y = JUMP_FORCE
 	if is_on_floor():
-		if floor_detect.is_colliding():
-			can_jump = true
 		landImpact()
 		friction = ground_friction
 		if fuel < 100:
