@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Dinky Beat (Not Dinkiest).mp3-8154c72b948adfbe64d1c6b92a3485a9.mp3str"
+
+[deps]
+
+source_file="res://assets/music/Dinky Beat (Not Dinkiest).mp3"
+dest_files=[ "res://.import/Dinky Beat (Not Dinkiest).mp3-8154c72b948adfbe64d1c6b92a3485a9.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

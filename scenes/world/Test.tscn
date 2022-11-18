@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://scenes/entity/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Camera2D.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/tiles/tileset.png" type="Texture" id=4]
 [ext_resource path="res://scripts/world/Test.gd" type="Script" id=5]
 [ext_resource path="res://scenes/UI/HUD.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/music/Dinky Beat (Not Dinkiest).mp3" type="AudioStream" id=7]
 
 [sub_resource type="Theme" id=53]
 TextEdit/colors/background_color = Color( 0, 0, 0, 0 )
@@ -473,18 +474,18 @@ text = "A / D: move
 SPACE: jump"
 
 [node name="TextEdit2" type="RichTextLabel" parent="."]
-margin_left = 1076.0
-margin_top = 198.0
-margin_right = 1270.0
-margin_bottom = 213.0
+margin_left = 997.0
+margin_top = 197.0
+margin_right = 1191.0
+margin_bottom = 212.0
 theme = SubResource( 53 )
 text = "SHIFT(while mid-air): jetpack"
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="."]
-margin_left = 1303.0
-margin_top = 195.0
-margin_right = 1488.0
-margin_bottom = 225.0
+margin_left = 1222.0
+margin_top = 196.0
+margin_right = 1407.0
+margin_bottom = 226.0
 text = "jump over big gap challenge 		   (impossible!!)"
 
 [node name="Tutorial" type="Sprite" parent="."]
@@ -520,3 +521,8 @@ text = "skill issue"
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
 player = NodePath("../player")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+autoplay = true
+bus = "Music"

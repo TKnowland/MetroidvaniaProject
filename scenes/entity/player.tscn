@@ -412,6 +412,7 @@ percent_visible = false
 
 [node name="Step" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 3 )
+volume_db = 1.748
 bus = "SFX"
 
 [node name="Jump" type="AudioStreamPlayer" parent="Node2D"]
