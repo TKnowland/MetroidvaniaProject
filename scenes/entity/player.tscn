@@ -410,17 +410,17 @@ percent_visible = false
 
 [node name="Node2D" type="Node2D" parent="."]
 
-[node name="Step" type="AudioStreamPlayer2D" parent="Node2D"]
+[node name="Step" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 3 )
 bus = "SFX"
 
-[node name="Jump" type="AudioStreamPlayer2D" parent="Node2D"]
+[node name="Jump" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 4 )
 
-[node name="ledgeGrab" type="AudioStreamPlayer2D" parent="Node2D"]
+[node name="ledgeGrab" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 5 )
 
-[node name="land" type="AudioStreamPlayer2D" parent="Node2D"]
+[node name="land" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 6 )
 
 [connection signal="timeout" from="timers/ledge_grab" to="." method="_on_ledge_grab_timeout"]
