@@ -34,7 +34,7 @@ var jump_count = 0
 var terminal_velocity :bool
 var max_health = 100
 var health = max_health
-var fall_time = 0
+var fall_time = 20
 
 var snap_vector = SNAP_DIRECTION * SNAP_LENGTH
 var velocity = Vector2()
@@ -100,7 +100,6 @@ func move():
 		terminal_velocity = velocity.y >= MAX_GRAVITY
 		if terminal_velocity:
 			fall_time += 1
-#			print(fall_time)
 		friction = air_friction
 		if is_climb:
 			velocity.y = 0
@@ -163,6 +162,6 @@ func landImpact():
 		Global.camera._shake(.05, 5)
 		can_move = false
 		yield(get_tree().create_timer(.1), "timeout")
-		health -= 20 * (fall_time / 20)
-		fall_time = 0
+		health -= 20 * ceil(fall_time / 20)
+		fall_time = 20
 		can_move = true

@@ -10,5 +10,5 @@ func _ready():
 
 func _process(delta):
 	FPS.text = str(Engine.get_frames_per_second())
-	healthBar.value = lerp(healthBar.value, player.health, 0.4)
+	healthBar.value = lerp(healthBar.value, ceil(player.health), 0.5)
 
