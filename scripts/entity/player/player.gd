@@ -34,6 +34,7 @@ var jump_count = 0
 var terminal_velocity :bool
 var max_health = 100
 var health = max_health
+var fall_time = 0
 
 var snap_vector = SNAP_DIRECTION * SNAP_LENGTH
 var velocity = Vector2()
@@ -47,7 +48,9 @@ var current_state = MOVE
 
 func _physics_process(delta):
 	if health <= 0:
-		get_tree().reload_current_scene()
+#		get_tree().reload_current_scene()
+		position = Vector2(160, 93)
+		health = max_health
 	_value_monitor()
 	ledgeGrabCancel()
 	match current_state:
@@ -95,6 +98,9 @@ func move():
 		jetpack()
 		airControl()
 		terminal_velocity = velocity.y >= MAX_GRAVITY
+		if terminal_velocity:
+			fall_time += 1
+#			print(fall_time)
 		friction = air_friction
 		if is_climb:
 			velocity.y = 0
@@ -154,9 +160,9 @@ func coyoteTime():
 func landImpact():
 	if terminal_velocity:
 		terminal_velocity = false
-		print(health)
 		Global.camera._shake(.05, 5)
 		can_move = false
 		yield(get_tree().create_timer(.1), "timeout")
-		health -= 20
+		health -= 20 * (fall_time / 20)
+		fall_time = 0
 		can_move = true
