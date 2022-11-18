@@ -7,7 +7,7 @@ position = Vector2( 160, 90 )
 current = true
 script = ExtResource( 1 )
 player = NodePath("../player")
-lerpspeed = 0.3
+lerpspeed = 0.2
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
