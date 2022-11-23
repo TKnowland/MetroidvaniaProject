@@ -417,11 +417,14 @@ bus = "SFX"
 
 [node name="Jump" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 4 )
+bus = "SFX"
 
 [node name="ledgeGrab" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 5 )
+bus = "SFX"
 
 [node name="land" type="AudioStreamPlayer" parent="Node2D"]
 stream = ExtResource( 6 )
+bus = "SFX"
 
 [connection signal="timeout" from="timers/ledge_grab" to="." method="_on_ledge_grab_timeout"]
